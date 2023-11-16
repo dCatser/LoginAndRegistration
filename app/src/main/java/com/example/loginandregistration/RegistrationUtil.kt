@@ -12,11 +12,18 @@ object RegistrationUtil {
 //    blah.add("hello")
 //
     var existingPasswords = listOf<String>("hi", "password")
+    var existingEmails = listOf("help@me.plz")
 
     // isn't empty
     // already taken
     // minimum number of characters is 3
     fun validateUsername(username: String) : Boolean {
+        if (username.length < 3) {
+            return false
+        }
+        if (existingUsers.contains(username)) {
+            return false
+        }
         return true
     }
 
@@ -27,24 +34,45 @@ object RegistrationUtil {
     // both passwords match
     // not empty
     fun validatePassword(password : String, confirmPassword: String) : Boolean {
-        if (password.length >= 8) {
-            return true
+        if (password.length < 8) {
+            return false
         }
+        if (!password.contains(Regex("[0-9]"))) {
+            return false
+        }
+        if (!password.contains(Regex("[A-Z]"))) {
+            return false
+        }
+        if (password != confirmPassword) {
+            return false
+        }
+        return true
     }
 
     // isn't empty
     fun validateName(name: String) : Boolean {
-        if (name != "") {
-            return true
+        if (name == "") {
+            return false
         }
+        return true
     }
 
     // isn't empty
     // make sure the email isn't used
     // make sure it's in the proper email format user@domain.tld
     fun validateEmail(email: String) : Boolean {
-        if (email != "" && email != existingUsers.toString()) {
-            return true
+        if (email == "") {
+            return false
         }
+        if (existingEmails.contains(email)) {
+            return false
+        }
+        if (!email.contains("@")) {
+            return false
+        }
+        if (!email.contains(".")) {
+            return false
+        }
+        return true
     }
 }
